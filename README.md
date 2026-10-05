@@ -5,6 +5,8 @@ A Windows 11 style taskbar for the [Omarchy](https://omarchy.org/) shell
 
 ![preview](preview.png)
 
+*Top: full-width taskbar following the Omarchy theme. Bottom: floating dock, and the Windows 11 dark color scheme.*
+
 - Centered (or left-aligned) icons with a Start button
 - Running apps get a small pill, the focused app a wide accent pill
 - Hover a running app for live window thumbnails; click one to focus it, ✕ to close it
