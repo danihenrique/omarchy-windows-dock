@@ -8,6 +8,7 @@ A Windows 11 style taskbar for the [Omarchy](https://omarchy.org/) shell
 - Centered (or left-aligned) icons with a Start button
 - Running apps get a small pill, the focused app a wide accent pill
 - Hover a running app for live window thumbnails; click one to focus it, ✕ to close it
+- Drag pinned icons left and right to reorder them
 - Right-click an app: its desktop actions, new window, pin/unpin, reorder, close
 - Right-click the bar: auto-hide, floating dock, alignment, clock, previews
 - Full-width taskbar or a floating rounded dock
@@ -34,6 +35,7 @@ omarchy plugin enable maximxmoroz.win11-dock
 |---|---|
 | Left click | Launch the app, or focus it. Clicking the focused app steps through its windows |
 | Middle click | Open a new window |
+| Drag sideways | Reorder a pinned app |
 | Right click on an app | App menu |
 | Right click on the bar | Dock settings |
 | Hover | Window previews (name tooltip when the app isn't running) |

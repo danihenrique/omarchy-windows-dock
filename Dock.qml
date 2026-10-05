@@ -239,6 +239,30 @@ Item {
     config.pinned = pinned
   }
 
+  // Drag reordering works on the model alone, so the dragged delegate stays
+  // alive; the new order is written to the config once, on drop.
+  function pinnedCount() {
+    var count = 0
+    for (var i = 0; i < appModel.count; i++) {
+      var info = appData[appModel.get(i).key]
+      if (info && info.pinned) count++
+    }
+    return count
+  }
+
+  function moveApp(from, to) {
+    if (from !== to) appModel.move(from, to, 1)
+  }
+
+  function commitOrder() {
+    var pinned = []
+    for (var i = 0; i < appModel.count; i++) {
+      var info = appData[appModel.get(i).key]
+      if (info && info.pinned) pinned.push(info.pinId)
+    }
+    config.pinned = pinned
+  }
+
   function runStart() {
     if (config.startCommand) Quickshell.execDetached(["sh", "-c", config.startCommand])
   }
