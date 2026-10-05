@@ -17,6 +17,7 @@ var STRINGS = {
     showPreviews: "Show window previews",
     barHeight: "Taskbar height",
     iconSize: "Icon size",
+    startIcon: "Start icon",
     editConfig: "Open config file"
   },
   ru: {
@@ -35,6 +36,7 @@ var STRINGS = {
     showPreviews: "Показывать превью окон",
     barHeight: "Высота панели",
     iconSize: "Размер значков",
+    startIcon: "Значок «Пуск»",
     editConfig: "Открыть файл настроек"
   }
 }

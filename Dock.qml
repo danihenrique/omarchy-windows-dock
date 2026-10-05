@@ -46,6 +46,8 @@ Item {
       property bool transparent: false
       property bool showStart: true
       property string startCommand: "omarchy-menu toggle apps"
+      // One of startIcons, or an icon name / absolute image path.
+      property string startIcon: "windows"
       property bool showClock: true
       property bool showPreviews: true
       property string fontFamily: "sans-serif"
@@ -53,6 +55,15 @@ Item {
   }
 
   readonly property alias config: config
+
+  // Built-in Start icons. The glyph ones come from fonts Omarchy ships: its
+  // own logo font, and the Nerd Font behind the "monospace" alias.
+  readonly property var startIcons: ["windows", "omarchy", "arch", "linux", "grid"]
+  readonly property var startGlyphs: ({
+    omarchy: { text: "\ue900", font: "omarchy" },
+    arch: { text: "\uf303", font: "monospace" },
+    linux: { text: "\uf17c", font: "monospace" }
+  })
 
   // ---- Metrics -----------------------------------------------------------
 

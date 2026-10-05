@@ -113,6 +113,7 @@ PanelWindow {
       { separator: true },
       { stepper: "barHeight", text: tr("barHeight"), step: 4, min: 36, max: 96 },
       { stepper: "iconSize", text: tr("iconSize"), step: 2, min: 16, max: 80 },
+      { stepper: "startIcon", text: tr("startIcon"), options: dock.startIcons },
       { separator: true },
       { id: "editConfig", text: tr("editConfig") }
     ], null, centerX)
@@ -121,6 +122,14 @@ PanelWindow {
   // Steppers edit the config in place and leave the menu open.
   function stepSetting(item, direction) {
     var config = dock.config
+    if (item.options) {
+      var count = item.options.length
+      var at = item.options.indexOf(config[item.stepper])
+      // A custom value isn't in the list: step onto the first/last preset.
+      if (at < 0) at = direction > 0 ? -1 : count
+      config[item.stepper] = item.options[(at + direction + count) % count]
+      return
+    }
     var value = config[item.stepper] + direction * item.step
     config[item.stepper] = Math.max(item.min, Math.min(item.max, value))
   }
@@ -244,23 +253,61 @@ PanelWindow {
           Behavior on color { ColorAnimation { duration: 120 } }
         }
 
-        Grid {
+        Item {
           id: logo
-          readonly property int cell: Math.round(win.dock.iconSize * 0.36)
+          readonly property string kind: win.dock.config.startIcon
+          readonly property var glyph: win.dock.startGlyphs[kind] || null
+          readonly property bool custom: win.dock.startIcons.indexOf(kind) < 0
+          readonly property int size: Math.round(win.dock.iconSize * 0.82)
+
           anchors.centerIn: parent
-          columns: 2
-          spacing: Math.max(1, Math.round(cell * 0.18))
+          width: size
+          height: size
           scale: startMouse.pressed ? 0.82 : 1
           Behavior on scale { NumberAnimation { duration: 140; easing.type: Easing.OutBack } }
 
-          Repeater {
-            model: 4
-            Rectangle {
-              width: logo.cell
-              height: logo.cell
-              radius: 1
-              color: win.dock.accent
+          // "windows": four squares. "grid": nine dots.
+          Grid {
+            id: tiles
+            readonly property bool dots: logo.kind === "grid"
+            readonly property int gap: Math.max(1, Math.round(logo.size * (dots ? 0.14 : 0.1)))
+            readonly property real cell: (logo.size - gap * (columns - 1)) / columns
+
+            visible: logo.kind === "windows" || dots
+            anchors.centerIn: parent
+            columns: dots ? 3 : 2
+            spacing: gap
+
+            Repeater {
+              model: tiles.columns * tiles.columns
+              Rectangle {
+                width: tiles.cell
+                height: tiles.cell
+                radius: tiles.dots ? width / 2 : 1
+                color: win.dock.accent
+              }
             }
+          }
+
+          Text {
+            visible: !!logo.glyph
+            anchors.centerIn: parent
+            textFormat: Text.PlainText
+            text: logo.glyph ? logo.glyph.text : ""
+            color: win.dock.accent
+            font.family: logo.glyph ? logo.glyph.font : ""
+            font.pixelSize: logo.size
+          }
+
+          Image {
+            visible: logo.custom
+            anchors.fill: parent
+            sourceSize: Qt.size(width * 2, height * 2)
+            fillMode: Image.PreserveAspectFit
+            cache: false
+            source: !logo.custom ? ""
+              : logo.kind.charAt(0) === "/" ? Util.fileUrl(logo.kind)
+              : Quickshell.iconPath(logo.kind, "start-here")
           }
         }
 
@@ -548,7 +595,7 @@ PanelWindow {
                   id: stepButton
                   required property int modelData
 
-                  width: modelData === 0 ? 34 : 26
+                  width: modelData !== 0 ? 26 : row.modelData.options ? 76 : 34
                   height: 26
                   radius: 4
                   color: modelData !== 0 && stepMouse.containsMouse ? Util.alpha(win.dock.text, 0.12) : "transparent"
@@ -559,6 +606,7 @@ PanelWindow {
                     anchors.centerIn: parent
                     textFormat: Text.PlainText
                     text: stepButton.modelData === 0 ? win.dock.config[row.modelData.stepper]
+                      : row.modelData.options ? (stepButton.modelData < 0 ? "‹" : "›")
                       : stepButton.modelData < 0 ? "−" : "+"
                     color: win.dock.text
                     font.family: win.dock.config.fontFamily
