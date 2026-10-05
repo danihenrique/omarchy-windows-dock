@@ -164,6 +164,27 @@ Item {
     }
   }
 
+  // ---- Icon theme --------------------------------------------------------
+
+  // Icon URLs don't change when the system icon theme does, so images would
+  // keep showing the old theme. Buttons reload when this ticks.
+  property int iconRevision: 0
+
+  Process {
+    running: true
+    command: ["gsettings", "monitor", "org.gnome.desktop.interface", "icon-theme"]
+    stdout: SplitParser {
+      onRead: iconReload.restart()
+    }
+  }
+
+  // Gives Qt a moment to switch themes before the icons are requested again.
+  Timer {
+    id: iconReload
+    interval: 600
+    onTriggered: root.iconRevision++
+  }
+
   // ---- Actions -----------------------------------------------------------
 
   function appName(info) {

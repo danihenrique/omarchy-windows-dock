@@ -413,6 +413,7 @@ PanelWindow {
               width: 16
               height: 16
               sourceSize: Qt.size(32, 32)
+              cache: false
               source: win.dock.iconFor(preview.info)
             }
 
@@ -461,6 +462,7 @@ PanelWindow {
                 width: 40
                 height: 40
                 sourceSize: Qt.size(80, 80)
+                cache: false
                 source: win.dock.iconFor(preview.info)
                 visible: !capture.hasContent
               }
@@ -580,6 +582,7 @@ PanelWindow {
               width: 16
               height: 16
               sourceSize: Qt.size(32, 32)
+              cache: false
               source: row.modelData.icon || ""
             }
 

@@ -88,6 +88,15 @@ Item {
     source: btn.dock.iconFor(btn.info)
     fillMode: Image.PreserveAspectFit
     asynchronous: true
+    cache: false
+
+    Connections {
+      target: btn.dock
+      function onIconRevisionChanged() {
+        icon.source = ""
+        icon.source = Qt.binding(function() { return btn.dock.iconFor(btn.info) })
+      }
+    }
     scale: btn.dragging ? 1.08 : mouse.pressed ? 0.82 : 1
 
     Behavior on scale { NumberAnimation { duration: 140; easing.type: Easing.OutBack } }
