@@ -10,7 +10,7 @@ A Windows 11 style taskbar for the [Omarchy](https://omarchy.org/) shell
 - Hover a running app for live window thumbnails; click one to focus it, ✕ to close it
 - Drag pinned icons left and right to reorder them
 - Right-click an app: its desktop actions, new window, pin/unpin, reorder, close
-- Right-click the bar: auto-hide, floating dock, alignment, clock, previews, bar height and icon size
+- Right-click the bar: auto-hide, floating dock, alignment, clock, previews, transparent background, bar height and icon size
 - Full-width taskbar or a floating rounded dock
 - Follows the Omarchy theme, or use the stock Windows 11 dark/light colors
 - English and Russian menus (picked from the system locale)
@@ -55,6 +55,7 @@ right-click menu on the bar edits the same file.
 | `barHeight` | `48` | Bar height in px |
 | `iconSize` | `26` | Icon size in px |
 | `opacity` | `0.9` | Bar background opacity |
+| `transparent` | `false` | No background and no edge line, only the icons |
 | `showStart` | `true` | Show the Start button |
 | `startCommand` | `"omarchy-menu toggle apps"` | Shell command the Start button runs |
 | `showClock` | `true` | Clock on the right (full-width bar only) |

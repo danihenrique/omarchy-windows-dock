@@ -42,6 +42,8 @@ Item {
       property int barHeight: 48
       property int iconSize: 26
       property real opacity: 0.9
+      // No background and no edge line: just the icons over the wallpaper.
+      property bool transparent: false
       property bool showStart: true
       property string startCommand: "omarchy-menu toggle apps"
       property bool showClock: true
@@ -69,7 +71,7 @@ Item {
   readonly property color text: themed ? Color.foreground : (dark ? "#ffffff" : "#1b1b1b")
   readonly property color accent: themed ? Color.accent : (dark ? "#4cc2ff" : "#0067c0")
   readonly property color urgent: themed ? Color.urgent : "#c42b1c"
-  readonly property color barColor: Util.alpha(surface, Util.clampAlpha(config.opacity))
+  readonly property color barColor: config.transparent ? "transparent" : Util.alpha(surface, Util.clampAlpha(config.opacity))
   readonly property color popupColor: Qt.rgba(surface.r, surface.g, surface.b, 1)
   readonly property color stroke: Util.alpha(text, dark ? 0.1 : 0.14)
 

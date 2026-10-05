@@ -106,6 +106,7 @@ PanelWindow {
     openMenu([
       { id: "autoHide", text: tr("autoHide"), checked: config.autoHide },
       { id: "floating", text: tr("floating"), checked: config.floating },
+      { id: "transparent", text: tr("transparent"), checked: config.transparent },
       { id: "alignLeft", text: tr("alignLeft"), checked: config.alignment === "left" },
       { id: "showClock", text: tr("showClock"), checked: config.showClock },
       { id: "showPreviews", text: tr("showPreviews"), checked: config.showPreviews },
@@ -137,6 +138,7 @@ PanelWindow {
     else if (id === "close") dock.closeAll(info)
     else if (id === "autoHide") config.autoHide = !config.autoHide
     else if (id === "floating") config.floating = !config.floating
+    else if (id === "transparent") config.transparent = !config.transparent
     else if (id === "alignLeft") config.alignment = config.alignment === "left" ? "center" : "left"
     else if (id === "showClock") config.showClock = !config.showClock
     else if (id === "showPreviews") config.showPreviews = !config.showPreviews
@@ -193,12 +195,12 @@ PanelWindow {
       height: parent.height
       radius: win.dock.floating ? 12 : 0
       color: win.dock.barColor
-      border.width: win.dock.floating ? 1 : 0
+      border.width: win.dock.floating && !win.dock.config.transparent ? 1 : 0
       border.color: win.dock.stroke
 
       // Full-width bar: a single hairline along the top edge.
       Rectangle {
-        visible: !win.dock.floating
+        visible: !win.dock.floating && !win.dock.config.transparent
         width: parent.width
         height: 1
         color: win.dock.stroke
