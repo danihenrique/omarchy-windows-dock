@@ -110,8 +110,18 @@ PanelWindow {
       { id: "showClock", text: tr("showClock"), checked: config.showClock },
       { id: "showPreviews", text: tr("showPreviews"), checked: config.showPreviews },
       { separator: true },
+      { stepper: "barHeight", text: tr("barHeight"), step: 4, min: 36, max: 96 },
+      { stepper: "iconSize", text: tr("iconSize"), step: 2, min: 16, max: 80 },
+      { separator: true },
       { id: "editConfig", text: tr("editConfig") }
     ], null, centerX)
+  }
+
+  // Steppers edit the config in place and leave the menu open.
+  function stepSetting(item, direction) {
+    var config = dock.config
+    var value = config[item.stepper] + direction * item.step
+    config[item.stepper] = Math.max(item.min, Math.min(item.max, value))
   }
 
   function triggerMenu(id) {
@@ -500,6 +510,7 @@ PanelWindow {
             id: row
             required property var modelData
             readonly property bool separator: modelData.separator === true
+            readonly property bool stepper: !!modelData.stepper
 
             width: menuColumn.width
             height: separator ? 9 : 34
@@ -517,6 +528,48 @@ PanelWindow {
               anchors.fill: parent
               radius: 4
               color: rowMouse.containsMouse ? Util.alpha(win.dock.text, 0.1) : "transparent"
+            }
+
+            // [ − ] value [ + ]
+            Row {
+              id: stepperControls
+              visible: row.stepper
+              anchors { right: parent.right; rightMargin: 6; verticalCenter: parent.verticalCenter }
+              spacing: 2
+
+              Repeater {
+                model: row.stepper ? [-1, 0, 1] : []
+
+                Rectangle {
+                  id: stepButton
+                  required property int modelData
+
+                  width: modelData === 0 ? 34 : 26
+                  height: 26
+                  radius: 4
+                  color: modelData !== 0 && stepMouse.containsMouse ? Util.alpha(win.dock.text, 0.12) : "transparent"
+                  border.width: modelData === 0 ? 0 : 1
+                  border.color: win.dock.stroke
+
+                  Text {
+                    anchors.centerIn: parent
+                    textFormat: Text.PlainText
+                    text: stepButton.modelData === 0 ? win.dock.config[row.modelData.stepper]
+                      : stepButton.modelData < 0 ? "−" : "+"
+                    color: win.dock.text
+                    font.family: win.dock.config.fontFamily
+                    font.pixelSize: 13
+                  }
+
+                  MouseArea {
+                    id: stepMouse
+                    anchors.fill: parent
+                    enabled: stepButton.modelData !== 0
+                    hoverEnabled: true
+                    onClicked: win.stepSetting(row.modelData, stepButton.modelData)
+                  }
+                }
+              }
             }
 
             Image {
@@ -539,7 +592,11 @@ PanelWindow {
 
             Text {
               visible: !row.separator
-              anchors { left: parent.left; leftMargin: 38; right: parent.right; rightMargin: 10; verticalCenter: parent.verticalCenter }
+              anchors {
+                left: parent.left; leftMargin: 38
+                right: row.stepper ? stepperControls.left : parent.right; rightMargin: 10
+                verticalCenter: parent.verticalCenter
+              }
               textFormat: Text.PlainText
               text: row.modelData.text || ""
               elide: Text.ElideRight
@@ -551,7 +608,7 @@ PanelWindow {
             MouseArea {
               id: rowMouse
               anchors.fill: parent
-              enabled: !row.separator
+              enabled: !row.separator && !row.stepper
               hoverEnabled: true
               onClicked: win.triggerMenu(row.modelData.id)
             }

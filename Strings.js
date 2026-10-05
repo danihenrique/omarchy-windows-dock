@@ -14,6 +14,8 @@ var STRINGS = {
     alignLeft: "Align icons to the left",
     showClock: "Show clock",
     showPreviews: "Show window previews",
+    barHeight: "Taskbar height",
+    iconSize: "Icon size",
     editConfig: "Open config file"
   },
   ru: {
@@ -29,6 +31,8 @@ var STRINGS = {
     alignLeft: "Значки по левому краю",
     showClock: "Показывать часы",
     showPreviews: "Показывать превью окон",
+    barHeight: "Высота панели",
+    iconSize: "Размер значков",
     editConfig: "Открыть файл настроек"
   }
 }
