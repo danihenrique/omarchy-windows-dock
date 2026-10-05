@@ -1,4 +1,4 @@
-# Win11 Dock for Omarchy
+# Windows Dock for Omarchy
 
 A Windows 11 style taskbar for the [Omarchy](https://omarchy.org/) shell
 (Quickshell + Hyprland).
@@ -20,13 +20,13 @@ A Windows 11 style taskbar for the [Omarchy](https://omarchy.org/) shell
 ## Install
 
 ```bash
-omarchy plugin add https://github.com/maximxmoroz/omarchy-win11-dock.git --enable
+omarchy plugin add https://github.com/maximxmoroz/omarchy-windows-dock.git --enable
 ```
 
 Or by hand:
 
 ```bash
-git clone https://github.com/maximxmoroz/omarchy-win11-dock.git ~/.config/omarchy/plugins/maximxmoroz.win11-dock
+git clone https://github.com/maximxmoroz/omarchy-windows-dock.git ~/.config/omarchy/plugins/maximxmoroz.win11-dock
 omarchy-shell shell rescanPlugins
 omarchy plugin enable maximxmoroz.win11-dock
 ```
