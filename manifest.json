@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "maximxmoroz.win11-dock",
+  "name": "Win11 Dock",
+  "version": "0.1.0",
+  "author": "maximxmoroz",
+  "license": "MIT",
+  "description": "Windows 11 style taskbar/dock for Omarchy: centered icons, Start button, running-app pills, live window previews, pinning and a right-click menu.",
+  "kinds": ["service"],
+  "entryPoints": {
+    "service": "Dock.qml"
+  },
+  "tags": ["dock", "taskbar", "launcher", "hyprland"]
+}
