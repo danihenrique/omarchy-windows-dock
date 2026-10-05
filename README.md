@@ -31,6 +31,19 @@ omarchy-shell shell rescanPlugins
 omarchy plugin enable maximxmoroz.win11-dock
 ```
 
+## Uninstall
+
+```bash
+omarchy plugin remove maximxmoroz.win11-dock
+rm -f ~/.config/omarchy/win11-dock.json   # optional: drop your dock settings
+```
+
+## Requirements
+
+Omarchy 4 (Quattro) on Hyprland. Nothing extra to install: the dock uses
+`uwsm-app`, `gtk-launch` and `gsettings`, which Omarchy already ships. The
+only file it writes is its own `~/.config/omarchy/win11-dock.json`.
+
 ## Usage
 
 | Action | Result |
