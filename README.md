@@ -106,3 +106,5 @@ the entry file, but edits to the other QML files only show up after
 ## License
 
 MIT
+
+Local canvas compatibility: app buttons and previews focus the existing window by its Hyprland address, following its workspace instead of requesting generic activation. A stale window handle is ignored until the next click.

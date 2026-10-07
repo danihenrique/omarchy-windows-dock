@@ -448,7 +448,7 @@ PanelWindow {
               anchors.fill: parent
               hoverEnabled: true
               onClicked: {
-                thumb.modelData.activate()
+                win.dock.focusWindow(thumb.modelData)
                 win.dismissPopups()
               }
             }

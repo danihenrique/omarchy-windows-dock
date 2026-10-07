@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import Quickshell.Hyprland
 import qs.Commons
 
 // Entry point. Owns the config file, the palette and the app model; one
@@ -216,6 +217,27 @@ Item {
     else Quickshell.execDetached(["uwsm-app", "--", info.appId])
   }
 
+  // Addressed compositor focus follows the window to its own workspace.
+  // Generic foreign-toplevel activation lets compositor policy reinterpret
+  // the request, which can relocate a window on a spatial canvas.
+  function focusWindow(toplevel) {
+    if (!toplevel) return
+    var list = Hyprland.toplevels ? Hyprland.toplevels.values : []
+    for (var i = 0; i < list.length; i++) {
+      var handle = list[i]
+      if (!handle || handle.wayland !== toplevel) continue
+      var address = String(handle.address || "").replace(/^0x/i, "")
+      if (!/^[0-9a-f]+$/i.test(address)) return
+      var selector = "address:0x" + address
+      Hyprland.dispatch(Hyprland.usingLua
+        ? 'hl.dsp.focus({window="' + selector + '"})'
+        : "focuswindow " + selector)
+      return
+    }
+    // The window list can lag a newly mapped client by a frame. Do not
+    // launch a duplicate or issue an ambiguous activation in that interval.
+  }
+
   // Left click: launch when not running, otherwise focus the app; clicking
   // the already focused app steps through its windows.
   function activate(info) {
@@ -227,11 +249,11 @@ Item {
     }
     for (var i = 0; i < windows.length; i++) {
       if (windows[i].activated) {
-        if (windows.length > 1) windows[(i + 1) % windows.length].activate()
+        if (windows.length > 1) root.focusWindow(windows[(i + 1) % windows.length])
         return
       }
     }
-    windows[0].activate()
+    root.focusWindow(windows[0])
   }
 
   function closeAll(info) {
